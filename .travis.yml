@@ -20,8 +20,10 @@ install:
   - luarocks install luacov-coveralls
   - luarocks install cluacov
   - luarocks install busted
+  - luarocks install ldoc
 
 script:
+  - ldoc .
   - busted -c
 
 after_success:
