@@ -1,0 +1,654 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>itertools</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><strong>itertools</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>itertools</code></h1>
+<p>Functional iteration utilities using coroutines.</p>
+<p>
+
+
+<h2> Iterators</h2>
+
+<p> An <strong>iterator</strong> is a coroutine which yields values of a sequence. Unless
+ specified otherwise, iterators use a constant amount of memory, and
+ yielding the a value takes a constant <em>O(1)</em> amount of time.</p>
+
+<p> Typically iterator implementations use the following pattern:</p>
+
+
+<pre>
+<span class="keyword">function</span> iter (...)
+  <span class="comment">-- Do one-time initialization tasks.
+</span>  <span class="keyword">local</span> finished_iterating = <span class="keyword">false</span>
+  <span class="comment">-- Return a coroutine.
+</span>  <span class="keyword">return</span> <span class="global">coroutine</span>.wrap(<span class="keyword">function</span> ()
+    <span class="keyword">while</span> <span class="keyword">not</span> finished_iterating <span class="keyword">do</span>
+      <span class="keyword">local</span> value = calculate_next_value()
+      <span class="global">coroutine</span>.yield(value)
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>)
+<span class="keyword">end</span>
+</pre>
+
+<p> Consuming an iterator is most conveniently done using a <code>for</code>-loop:</p>
+
+
+<pre>
+<span class="keyword">for</span> element <span class="keyword">in</span> iterable <span class="keyword">do</span>
+  <span class="comment">-- Do something with the element.
+</span><span class="keyword">end</span>
+</pre>
+
+<h2> Credits</h2>
+
+<p> This module is loosely based on <a href="https://docs.python.org/3.5/library/itertools.html">Python's itertools
+ module</a>, plus some
+ other of Python's built-ins like <a href="https://docs.python.org/3/library/functions.html?highlight=map#map">map()</a>
+ and <a href="https://docs.python.org/3/library/functions.html?highlight=filter#filter">filter()</a>.</p>
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#keys">keys (table)</a></td>
+	<td class="summary">Iterate over the keys of a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#values">values (table)</a></td>
+	<td class="summary">Iterate over the values of a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#items">items (table)</a></td>
+	<td class="summary">Iterate over the key and value pairs of a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#each">each (table)</a></td>
+	<td class="summary">Iterate over each value of an array-like table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#collect">collect (iterable)</a></td>
+	<td class="summary">Consume an iterable and collect its elements into an array-like table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#count">count ([n[, step]])</a></td>
+	<td class="summary">Iterate over an infinite sequence of consecutive numbers.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#cycle">cycle (iterable)</a></td>
+	<td class="summary">Iterate over a sequence of elements repeatedly.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#value">value (value[, times])</a></td>
+	<td class="summary">Iterate over the same value repeatedly.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#islice">islice (iterable[, start[, stop]])</a></td>
+	<td class="summary">Iterate over selected values of an iterable.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#takewhile">takewhile (predicate, iterable)</a></td>
+	<td class="summary">Iterate over values while a predicate is true.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#map">map (func, iterable)</a></td>
+	<td class="summary">Iterate over elements applying a function to them</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#filter">filter (predicate, iterable)</a></td>
+	<td class="summary">Iterate elements, filtering them according to a predicate.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#sorted">sorted (iterable[, key[, reverse]])</a></td>
+	<td class="summary">Iterate over the sorted elements from an iterable.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "keys"></a>
+    <strong>keys (table)</strong>
+    </dt>
+    <dd>
+    Iterate over the keys of a table. </p>
+
+<p> Given a <a href="http://www.lua.org/manual/5.1/manual.html#5.5">table</a>, returns an iterator over its keys, as returned by
+ <a href="http://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">table</span>
+         A dictionary-like table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator over the table keys.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "values"></a>
+    <strong>values (table)</strong>
+    </dt>
+    <dd>
+    Iterate over the values of a table. </p>
+
+<p> Given a <a href="http://www.lua.org/manual/5.1/manual.html#5.5">table</a>, returns an iterator over its values, as returned by
+ <a href="http://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">table</span>
+         A dictionary-like table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator over the table values.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "items"></a>
+    <strong>items (table)</strong>
+    </dt>
+    <dd>
+
+<p>Iterate over the key and value pairs of a table. </p>
+
+<p> Given a <a href="http://www.lua.org/manual/5.1/manual.html#5.5">table</a>, returns an iterator over its keys and values, as returned
+ by <a href="http://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>. Each yielded element is a two-element <em>{ key, value }</em>
+ array-like table.</p>
+
+<p> Note that yielded array-like tables are not guaranteed be be unique, and if
+ you need to save a copy of it you must create a new table yourself:</p>
+
+<pre><code>local pairs = {}
+for pair in iterable do
+  table.insert(pairs, { pair[1], pair[2] })
+end
+</code></pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">table</span>
+         A dictionary-like table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator over <em>{ key, value }</em> pairs.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "each"></a>
+    <strong>each (table)</strong>
+    </dt>
+    <dd>
+    Iterate over each value of an array-like table. </p>
+
+<p> Given an array-like <a href="http://www.lua.org/manual/5.1/manual.html#5.5">table</a>, returns an iterator over its values, as
+ returned by <a href="http://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">table</span>
+         An array-like table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator over the table values.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "collect"></a>
+    <strong>collect (iterable)</strong>
+    </dt>
+    <dd>
+    Consume an iterable and collect its elements into an array-like table. </p>
+
+<p> Note that this function runs in <em>O(n)</em> time and memory usage because it
+ needs to store all the elements yielded by the iterable.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">iterable</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         A non-infinite iterator.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Array-like table with the collected elements.</li>
+        <li>
+           <span class="types"><span class="type">integer</span></span>
+        Number of elements collected.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "count"></a>
+    <strong>count ([n[, step]])</strong>
+    </dt>
+    <dd>
+
+<p>Iterate over an infinite sequence of consecutive numbers. </p>
+
+<p> Returns an iterable which produces an infinite sequence of numbers starting
+ at <code>n</code>, adding <code>step</code> to it in each iteration. Let <code>i</code> be the current
+ iteration, starting with <code>i = 0</code>, the sequence generated would be:</p>
+
+<pre><code>n + step * 0, n + step * 1, n + step * 2, ..., n + step * i
+</code></pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">n</span>
+            <span class="types"><span class="type">number</span></span>
+         First value in the sequence.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">step</span>
+            <span class="types"><span class="type">number</span></span>
+         Increment added in each iteration.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator over the sequence of numbers.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "cycle"></a>
+    <strong>cycle (iterable)</strong>
+    </dt>
+    <dd>
+    Iterate over a sequence of elements repeatedly. </p>
+
+<p> Returns an iterable which produces an infinite sequence of elements: first,
+ the elements from <code>iterable</code>, then the sequence is repeated indefinitely.</p>
+
+<p> Note that this may store in memory up to as much elements as provided by
+ <code>iterable</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">iterable</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         An iterator.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An infinite iterator repeating elements from <code>iterable</code>.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "value"></a>
+    <strong>value (value[, times])</strong>
+    </dt>
+    <dd>
+    Iterate over the same value repeatedly. </p>
+
+<p> Returns an iterator which always produces the same <a href="index.html#value">value</a>, indefinitely or
+ up to a given number of <code>times</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+         The value to produce.
+        </li>
+        <li><span class="parameter">times</span>
+            <span class="types"><span class="type">integer</span></span>
+         Number of repetitions.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator which always produces <a href="index.html#value">value</a>.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "islice"></a>
+    <strong>islice (iterable[, start[, stop]])</strong>
+    </dt>
+    <dd>
+
+<p>Iterate over selected values of an iterable. </p>
+
+<p> If <code>start</code> is specified, the returned iterator will skip all preceding
+ elements; otherwise <code>start</code> defaults to <code>1</code>. The elements with indexes
+ between <code>start</code> and <code>stop</code> (inclusive) will be yielded. If <code>stop</code> is
+ not specified, the default is to yield all elements from <code>iterable</code>
+ until it is exhausted.</p>
+
+<p> For example, using only <code>stop</code> can be used to limit the amount of elements
+ yielded by an indefinite iterator. A <code>range()</code> iterator similar to Python's
+ could be implemented as follows:</p>
+
+<pre><code>function range (n)
+   return itertools.islice(itertools.count(), nil, n)
+end
+</code></pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">iterable</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         An iterator.
+        </li>
+        <li><span class="parameter">start</span>
+            <span class="types"><span class="type">integer</span></span>
+         Index of the first element, by default <code>1</code>.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">stop</span>
+            <span class="types"><span class="type">integer</span></span>
+         Index of the last element, by default undefined.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator which selects values.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "takewhile"></a>
+    <strong>takewhile (predicate, iterable)</strong>
+    </dt>
+    <dd>
+    Iterate over values while a predicate is true. </p>
+
+<p> The returned iterator returns successive elements from an <code>iterable</code> as
+ long as the <code>predicate</code> evaluates to <code>true</code> for each element.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">predicate</span>
+            <span class="types"><span class="type">function</span></span>
+         Function which checks the predicate.
+        </li>
+        <li><span class="parameter">iterable</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         An iterator.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator which yield values while the predicate is true.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "map"></a>
+    <strong>map (func, iterable)</strong>
+    </dt>
+    <dd>
+    Iterate over elements applying a function to them
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">function</span></span>
+         function Function applied to each element.
+        </li>
+        <li><span class="parameter">iterable</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         An iterator.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         An iterator which yields the results of applying the
+   function to the elements of <code>iterable</code>.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "filter"></a>
+    <strong>filter (predicate, iterable)</strong>
+    </dt>
+    <dd>
+
+<p>Iterate elements, filtering them according to a predicate. </p>
+
+<p> Returns an iterator over the elements another <code>iterable</code> which yields only
+ the elements for which the <code>predicate</code> function return <code>true</code>.</p>
+
+<p> For example, the following returns an indefinite iterator over the even
+ natural numbers:</p>
+
+<pre><code>function even_naturals ()
+   return itertools.filter(function (x) return x % 2 == 1 end,
+                           itertools.count())
+end
+</code></pre>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">predicate</span>
+            <span class="types"><span class="type">function</span></span>
+
+
+
+        </li>
+        <li><span class="parameter">iterable</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         An iterator.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator over the elements which satisfy the predicate.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "sorted"></a>
+    <strong>sorted (iterable[, key[, reverse]])</strong>
+    </dt>
+    <dd>
+    Iterate over the sorted elements from an iterable. </p>
+
+<p> A custom <code>key</code> function can be supplied, and it will be applied to each
+ element being compared to obtain a sorting key, which will be the values
+ used for comparisons when sorting. The <code>reverse</code> flag can be set to sort
+ the elements in descending order.</p>
+
+<p> Note that <code>iterable</code> must be consumed before sorting, so the returned
+ iterator runs in <em>O(n)</em> memory space. Sorting is done internally using
+ <a href="http://www.lua.org/manual/5.1/manual.html#pdf-table.sort">table.sort</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">iterable</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+         An iterator.
+        </li>
+        <li><span class="parameter">key</span>
+            <span class="types"><span class="type">function</span></span>
+         Function used to retrieve the sorting key used
+   to compare elements.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">reverse</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Whether to yield the elements in reverse
+   (descending) order. If not supplied, defaults to <code>false</code>.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.1/manual.html#5.2">coroutine</a></span>
+        An iterator over the sorted elements.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-09-09 02:18:25 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
