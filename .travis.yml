@@ -1,0 +1,28 @@
+language: python
+sudo: false
+
+env:
+  matrix:
+    - LUA="lua 5.1"
+    - LUA="lua 5.2"
+    - LUA="lua 5.3"
+    - LUA="luajit 2.0"
+    - LUA="luajit 2.1"
+
+before_install:
+  - pip install hererocks
+  - hererocks here -r^ --$LUA
+  - export PATH=$PATH:$PWD/here/bin
+  - eval `luarocks path --bin`
+  - lua -v
+
+install:
+  - luarocks install luacov-coveralls
+  - luarocks install cluacov
+  - luarocks install busted
+
+script:
+  - busted -c
+
+after_success:
+  - luacov-coveralls -i itertools.lua -e spec/ -e here/
