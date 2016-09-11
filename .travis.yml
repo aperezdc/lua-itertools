@@ -33,9 +33,4 @@ script:
 
 after_success:
   - luacov-coveralls -i itertools.lua -e spec/ -e here/
-
-deploy:
-  provider: script
-  script: .gh-pages
-  on:
-    branch: master
+  - bash -e .gh-pages
