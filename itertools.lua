@@ -335,14 +335,7 @@ local function make_comp_func(key)
       return nil
    end
    return function (a, b)
-      local k_a, k_b = key(a), key(b)
-      if k_a < k_b then
-         return -1
-      elseif k_a > k_b then
-         return 1
-      else
-         return 0
-      end
+      return key(a) < key(b)
    end
 end
 
@@ -371,7 +364,7 @@ function itertools.sorted (iterable, key, reverse)
    t_sort(t, make_comp_func(key))
    if reverse then
       return co_wrap(function ()
-         for i = n, 1 do co_yield(t[i]) end
+         for i = n, 1, -1 do co_yield(t[i]) end
       end)
    else
       return co_wrap(function ()
