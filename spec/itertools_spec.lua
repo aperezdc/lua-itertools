@@ -42,6 +42,136 @@ describe("itertools.keys", function ()
    end)
 end)
 
+describe("itertools.items", function ()
+   it("iterates over k/v pairs", function ()
+      local data = { foo = 1, bar = 2, baz = 3 }
+      local count = 0
+      for pair in iter.items(data) do
+         count = count + 1
+         local k, v = pair[1], pair[2]
+         assert.equal(data[k], v)
+      end
+      assert.equal(3, count)
+   end)
+end)
+
+describe("itertools.count", function ()
+   it("counts ad infinitum", function ()
+      local nextvalue = iter.count()
+      for i = 1, 10 do
+         assert.equal(i, nextvalue())
+      end
+   end)
+   it("counts from a given value", function ()
+      local nextvalue = iter.count(10)
+      for i = 10, 20 do
+         assert.equal(i, nextvalue())
+      end
+   end)
+   it("counts using a step", function ()
+      local nextvalue = iter.count(nil, 2)
+      for i = 1, 10, 2 do
+         assert.equal(i, nextvalue())
+      end
+   end)
+   it("counts from a given value using a step", function ()
+      local nextvalue = iter.count(10, 5)
+      for i = 10, 30, 5 do
+         assert.equal(i, nextvalue())
+      end
+   end)
+   it("accepts a negative step", function ()
+      local nextvalue = iter.count(10, -1)
+      for i = 10, 1, -1 do
+         assert.equal(i, nextvalue())
+      end
+   end)
+end)
+
+describe("itertools.cycle", function ()
+   it("repeats", function ()
+      local nextvalue = iter.cycle(iter.values { "foo", "bar" })
+      for i = 1, 10 do
+         assert.equal("foo", nextvalue())
+         assert.equal("bar", nextvalue())
+      end
+   end)
+end)
+
+describe("itertools.value", function ()
+   it("always returns the same value", function ()
+      local value = { foo = "bar" }
+      local nextvalue = iter.value(value)
+      for i = 1, 10 do
+         assert.same(value, nextvalue())
+      end
+   end)
+   it("accepts a number of times", function ()
+      local value = { foo = "bar" }
+      local result = iter.collect(iter.value(value, 15))
+      assert.equal(15, #result)
+      for i = 1, #result do
+         assert.same(value, result[i])
+      end
+   end)
+end)
+
+describe("itertools.islice", function ()
+   local function check(result, nextvalue)
+      local count = 0
+      for _, v in ipairs(result) do
+         assert.equal(v, nextvalue())
+         count = count + 1
+      end
+      assert.equal(count, #result)
+   end
+
+   local input = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+
+   it("skips elements at the beginning", function ()
+      check({ 5, 6, 7, 8, 9, 10 },
+            iter.islice(iter.values(input), 5))
+   end)
+   it("skips elements at the end", function ()
+      check({ 1, 2, 3, 4 },
+            iter.islice(iter.values(input), nil, 5))
+   end)
+   it("skips elements at both ends", function ()
+      check({ 4, 5, 6, 7 },
+            iter.islice(iter.values(input), 4, 7))
+   end)
+   it("returns one element for start==stop", function ()
+      check({ 5 }, iter.islice(iter.values(input), 5, 6))
+   end)
+   it("returns no elements for an empty slice", function ()
+      check({}, iter.islice(iter.values(input), 7, 3))
+   end)
+end)
+
+describe("itertools.takewhile", function ()
+   it("filters elements", function ()
+      local data = { 1, 1, 1, 1, -1, 1, -1, 1, 1 }
+      local result = iter.collect(iter.takewhile(function (x) return x > 0 end,
+                                                 iter.values(data)))
+      assert.equal(4, #result)
+      for _, v in ipairs(result) do
+         assert.equal(1, v)
+      end
+   end)
+end)
+
+describe("itertools.filter", function ()
+   it("filters elements", function ()
+      local data = { 6, 1, 2, 3, 4, 5, 6 }
+      local result = iter.collect(iter.filter(function (x) return x < 4 end,
+                                              iter.values(data)))
+      assert.equal(3, #result)
+      for i, v in ipairs(result) do
+         assert.equal(i, v)
+      end
+   end)
+end)
+
 describe("itertools.sorted", function ()
    it("iterates over sorted items", function ()
       local data = { 1, 45, 9, 2, -2, 42, 0, 42 }
