@@ -39,7 +39,7 @@
 -- -------
 --
 -- This module is loosely based on [Python's itertools
--- module](https://docs.python.org/3.5/library/itertools.html), plus some
+-- module](https://docs.python.org/3/library/itertools.html), plus some
 -- other of Python's built-ins like [map()](https://docs.python.org/3/library/functions.html?highlight=map#map)
 -- and [filter()](https://docs.python.org/3/library/functions.html?highlight=filter#filter).
 --
