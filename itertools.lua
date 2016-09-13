@@ -96,9 +96,9 @@ end
 -- Note that yielded array-like tables are not guaranteed be be unique, and if
 -- you need to save a copy of it you must create a new table yourself:
 --
---    local pairs = {}
+--    local tpairs = {}
 --    for pair in iterable do
---      table.insert(pairs, { pair[1], pair[2] })
+--      table.insert(tpairs, { pair[1], pair[2] })
 --    end
 --
 -- @param table A dictionary-like table.
