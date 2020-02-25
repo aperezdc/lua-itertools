@@ -46,7 +46,8 @@
 -- @module itertools
 --
 
-local pairs, ipairs, t_sort = pairs, ipairs, table.sort
+local pairs, ipairs, select = pairs, ipairs, select
+local t_sort, t_unpack = table.sort, table.unpack
 local co_yield, co_wrap = coroutine.yield, coroutine.wrap
 local co_resume = coroutine.resume
 
@@ -371,6 +372,59 @@ function itertools.sorted (iterable, key, reverse)
          for i = 1, n do co_yield(t[i]) end
       end)
    end
+end
+
+
+local _value = itertools.value
+
+--- Cartesian product of iterables.
+--
+-- This is equivalent to nested for-loops, with the leftmost iterators
+-- being the outermost for-loops, so the yielded results cycle in a
+-- manner similar to an odometer, with the rightmost element changing
+-- on every iteration.
+--
+-- @tparam coroutine Any number of iterators.
+-- @treturn coroutine An iterator over tuples of product elements.
+--
+function itertools.product (...)
+   local niterables = select('#', ...)
+   local items = {}
+   for i = 1, niterables do
+      items[i]  = _collect(select(i, ...))
+   end
+   return co_wrap(function ()
+      local indices, _ = _collect(_value(1, niterables))
+      while true do
+         -- Assemble and yield a result using the current indices.
+         local result = {}
+         for i = 1, niterables do
+            result[i] = items[i][indices[i]]
+         end
+         co_yield(t_unpack(result))
+
+         -- Update the indices, right to left, advancing to the
+         -- next column when the previous one has rolled over.
+         local last_rolled = nil
+         for i = niterables, 1, -1 do
+            indices[i] = indices[i] + 1
+            if indices[i] > #items[i] then
+               -- Roll over.
+               last_rolled = i
+               indices[i] = 1
+               result[i] = items[i][indices[i]]
+            else
+               -- No roll over.
+               result[i] = items[i][indices[i]]
+               break
+            end
+         end
+         -- All the columns rolled over: stop.
+         if last_rolled == 1 then
+            return
+         end
+      end
+   end)
 end
 
 return itertools

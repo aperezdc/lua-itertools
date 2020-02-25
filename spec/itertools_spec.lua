@@ -204,3 +204,27 @@ describe("itertools.sorted", function ()
       end
    end)
 end)
+
+describe("itertools.product", function ()
+   it("iterates over a single iterator", function ()
+      local data = { 1, 43, 36, 12 }
+      local result = iter.collect(iter.product(iter.values(data)))
+      assert.equal(#data, #result)
+      for i = 1, #data do
+         assert.equal(data[i], result[i])
+      end
+   end)
+
+   it("makes a product out of two iterators", function ()
+      local i1 = iter.values {1, 2, 3}
+      local i2 = iter.values {'a', 'b'}
+      local result = {{1, 'a'}, {1, 'b'}, {2, 'a'}, {2, 'b'}, {3, 'a'}, {3, 'b'}}
+      local ri = 0
+      for l, r in iter.product(i1, i2) do
+         ri = ri + 1
+         assert.equal(result[ri][1], l)
+         assert.equal(result[ri][2], r)
+      end
+      assert.equal(#result, ri)
+   end)
+end)
