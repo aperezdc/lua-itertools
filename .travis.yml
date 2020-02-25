@@ -3,14 +3,13 @@ sudo: false
 
 env:
   global:
-    - DOCS_LUA: "lua 5.3"
     - GH_REF: github.com/aperezdc/lua-itertools
     - secure: >-
         gysrVCjOCEJSg+dQALOSrxPMnTdie0VtsuBMraff6chCCH2c6UaKQG79zewNdHdWl/Gs3xxZSaTUh9fe0xd4AOqur1Koik+kLnKDGD1uS5xdcu72kAhPWKy3d5kKq358myZuoQrO42WYBMpruYPCbtsm+iL2k1af6hFDuy3Bv6Oc/p0fXzyDPhDeM2ihAhIjpHGWs5qOBLkow1YADHBb5enOYIUlKonf2cIfjctqMB2W8/4vdt44eGo8xjwAyuCLOm6+OtVJJ9iyV/nLOAc0RbgQXe2X/Gi05RnzByB5x+D0cv0B9Ivn8yZYXoCNM41RgqXc0IhN4gc9anZJrTQHHN7K6qgS7a3+XVkhYanvh1t2h+BVZPK+AuL9GSQXO7DpxmcnKjoxAj63TxTm/ONeonFoVTkq2esajIcWlSZnbCFA8HGhBK6A0pleUqgdUXTht2Q7Sirmm6um/qhkPWtdF3LTY+OWZ+2BnfYNEiM3vDK+eW4voIDrdqVLDpMDCcDdvMKspqi3XPXGE+IOjYtxNmE0bEgC5mQUfNNCPB7jKvKLawdtHImkW7QnGyPCqTs1WuPbAR+gSjgpkqHlTO3WZ5lLwIWgvsvlMu/OCYhZexVCsJWsZyNgDrGJ0rpYEwjej7nYNLEDPqpdQ+UASvhUDInZDpNVALZGaj6onLdZOK4=
   matrix:
     - LUA="lua 5.1"
     - LUA="lua 5.2"
-    - LUA="lua 5.3"
+    - LUA="lua 5.3" DOCS=1
     - LUA="luajit 2.0"
     - LUA="luajit 2.1"
 

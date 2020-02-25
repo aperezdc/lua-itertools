@@ -7,7 +7,7 @@ bail () {
 
 [[ ${TRAVIS_TEST_RESULT} = 0 ]] || bail "Skipping docs for failed build"
 [[ ${TRAVIS_BRANCH} = master ]] || bail "Skipping docs for non-master branch"
-[[ ${DOCS_LUA} = ${LUA}      ]] || bail "Skipping non-documentation build"
+[[ ${DOCS} = 1               ]] || bail "Skipping non-documentation build"
 
 cd doc
 git init
