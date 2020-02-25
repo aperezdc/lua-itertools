@@ -384,7 +384,8 @@ local _value = itertools.value
 -- manner similar to an odometer, with the rightmost element changing
 -- on every iteration.
 --
--- @tparam coroutine Any number of iterators.
+-- @tparam coroutine iterable An iterator.
+-- @tparam[opt] coroutine ... Additional iterators.
 -- @treturn coroutine An iterator over tuples of product elements.
 --
 function itertools.product (...)
